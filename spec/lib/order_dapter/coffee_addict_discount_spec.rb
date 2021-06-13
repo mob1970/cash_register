@@ -13,7 +13,22 @@ describe OrderAdapter::CoffeeAddictDiscount do
   let(:item) { item_coffee }
   let(:order) { double('Order') }
 
-  describe '#handles' do
+  describe '#handles?' do
+    context 'product is not coffee' do
+      let(:other_product) { double('Product', code: 'FF1') }
+
+      it 'returns false' do
+        expect(described_class.handles?(other_product)).to be_falsey
+      end
+    end
+
+    context 'product is coffee' do
+      let(:coffee_product) { double('Product', code: 'CF1') }
+
+      it 'returns true' do
+        expect(described_class.handles?(coffee_product)).to be_truthy
+      end
+    end
   end
 
   describe '#adapt' do
