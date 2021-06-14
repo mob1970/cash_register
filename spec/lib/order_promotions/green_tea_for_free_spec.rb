@@ -30,7 +30,7 @@ describe OrderPromotions::GreenTeaForFree do
 
     context 'one green tea added' do
       let(:just_one_green_tea_order) { double('Order', order_lines: [item_green_tea]) }
-      let(:one_green_tea_for_free) {  double('Order', order_lines: [item_green_tea, item_green_tea_for_free]) }
+      let(:one_green_tea_for_free) { double('Order', order_lines: [item_green_tea, item_green_tea_for_free]) }
       let(:two_green_tea_order) { double('Order', order_lines: [item_green_tea, item_green_tea]) }
       let(:two_green_tea_for_free) {  double('Order', order_lines: [item_green_tea, item_green_tea, item_green_tea_for_free, item_green_tea_for_free]) }
 
