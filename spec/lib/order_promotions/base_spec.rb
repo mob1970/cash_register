@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require './lib/order_adapter/base'
+require './lib/order_promotions/base'
 
-describe OrderAdapter::Base do
+describe OrderPromotions::Base do
   let(:item) { double('Item', code: 'foo', price: 10.00) }
   let(:order) { double('Order') }
 
-  class MethodPriceNotOverridenClass < OrderAdapter::Base; end
-  class MethodPriceOverridenClass < OrderAdapter::Base
-    def adapt(_item, _order)
+  class MethodPriceNotOverridenClass < OrderPromotions::Base; end
+  class MethodPriceOverridenClass < OrderPromotions::Base
+    def self.adapt(_item, _order)
       5
     end
   end
@@ -23,13 +23,13 @@ describe OrderAdapter::Base do
 
     context 'method not overriden' do
       it 'must raise a NotImplementedError' do
-        expect { MethodPriceNotOverridenClass.new.adapt(item, order) }.to raise_exception(NotImplementedError)
+        expect { MethodPriceNotOverridenClass.adapt(order) }.to raise_exception(NotImplementedError)
       end
     end
 
     context 'method overriden' do
       it 'must not raise a NotImplementedException error' do
-        expect { MethodPriceOverridenClass.new.adapt(item, order) }.not_to raise_exception(NotImplementedError)
+        expect { MethodPriceOverridenClass.adapt(order) }.not_to raise_exception(NotImplementedError)
       end
     end
   end

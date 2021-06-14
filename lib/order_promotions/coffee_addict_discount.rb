@@ -2,7 +2,7 @@
 
 require './lib/number_handling/operations'
 
-module OrderAdapter
+module OrderPromotions
   # Class to handle the coffee discount
   class CoffeeAddictDiscount < Base
     register :coffee_addict_discount
@@ -10,15 +10,7 @@ module OrderAdapter
     COFFEE_CODE = 'CF1'
     COFFEE_LINES_FOR_DISCOUNT = 3
 
-    def self.handles?(product)
-      product.code == COFFEE_CODE
-    end
-
-    def adapt(item, order)
-      unless item.code == COFFEE_CODE
-        raise(PriceHandlers::IncorrectProductError, "CoffeeAddictDiscount doesn't handle product #{item.code}.")
-      end
-
+    def self.adapt(order)
       coffee_product = Product.find_by(code: COFFEE_CODE)
       coffee_lines = order.order_lines.select { |line| line.product.code == COFFEE_CODE }.size
 
