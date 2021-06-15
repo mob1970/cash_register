@@ -3,14 +3,14 @@
 module OrderPromotions
   # Class to controll all the order adapters
   class OrderPromotionsHandler
-    @@adapters = {}
+    @@promotions = {}
 
     def self.register(klass, handler)
-      @@adapters[handler] = klass
+      @@promotions[handler] = klass
     end
 
     def self.apply(order)
-      @@adapters.values.each do |klass|
+      @@promotions.values.each do |klass|
         order = klass.adapt(order)
       end
 
