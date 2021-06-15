@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<label>Name:</label>
+<%= @order.name %>
+<br />
+<br />
+<label>Total amount:</label>
+<%= @order.total_amount %>
+<br /><br />
+
+
+<%= form_with(model: @order, local: true) do |form| %>
+  <%= form.fields_for :order_line do |order_line_form| %>
+      <%= form.label :product %>
+      <%= form.collection_select :product_id, @products, :id, :name %>
+      <%= form.submit 'Add Product' %>
+  <% end %>
+<% end %>
+
+<br /><br />
+<br /><br />
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Price</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @order.order_lines.each do |order_line| %>
+      <tr>
+        <td><%= order_line.product.name %></td>
+        <td><%= order_line.price %></td>
+        <td><%= link_to 'Delete', order_line, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<br /><br />
+<%= link_to 'Back', orders_path %>
