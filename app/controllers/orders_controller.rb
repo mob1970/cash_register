@@ -1,6 +1,9 @@
 require './lib/number_handling/operations'
+# frozen_string_literal: true
+
 require './lib/order_promotions/order_promotions'
 
+# Class to controll all the actions related to an Order
 class OrdersController < ApplicationController
   before_action :set_order, only: %i[show edit update destroy]
 
@@ -13,9 +16,9 @@ class OrdersController < ApplicationController
   def show
     @products = Product.all
     @order = Order.includes(:order_lines)
-      .joins('LEFT JOIN order_lines ON orders.id = order_lines.order_id')
-      .joins('LEFT JOIN products ON products.id = order_lines.product_id')
-      .includes(:products).find(params['id'])
+                  .joins('LEFT JOIN order_lines ON orders.id = order_lines.order_id')
+                  .joins('LEFT JOIN products ON products.id = order_lines.product_id')
+                  .includes(:products).find(params['id'])
   end
 
   # GET /orders/new
