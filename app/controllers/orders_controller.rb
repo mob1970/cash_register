@@ -1,3 +1,4 @@
+require './lib/number_handling/operations'
 require './lib/order_promotions/order_promotions'
 
 class OrdersController < ApplicationController
@@ -87,6 +88,6 @@ class OrdersController < ApplicationController
 
     def recalculate_order
       @order = OrderPromotions::OrderPromotionsHandler.apply(@order)
-      @order.total_amount = @order.order_lines.sum(&:price)
+      @order.total_amount = NumberHandling::Operations.convert_to_decimals(@order.order_lines.sum(&:price), 2)
     end
 end

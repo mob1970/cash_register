@@ -16,7 +16,7 @@ module OrderPromotions
 
       return order unless coffee_lines >= COFFEE_LINES_FOR_DISCOUNT
 
-      new_price = NumberHandling::Operations.convert_to_decimals(coffee_product.price * 0.66, 2)
+      new_price = NumberHandling::Operations.convert_to_decimals(coffee_product.price * 0.66, 3)
       order.order_lines.each do |line|
         line.price = new_price if line.product.code == COFFEE_CODE
       end
