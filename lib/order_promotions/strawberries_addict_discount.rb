@@ -10,14 +10,23 @@ module OrderPromotions
     STRAWBERRIES_FIXED_PRICE = 4.50
 
     def self.adapt(order)
-      coffee_lines = order.order_lines.select { |line| line.product.code == STRAWBERRIES_CODE }.size
+      strawberry_product = Product.find_by(code: STRAWBERRIES_CODE)
+      strawberry_lines = order.order_lines.select { |line| line.product.code == STRAWBERRIES_CODE }.size
 
-      return order unless coffee_lines >= STRAWBERRIES_LINES_FOR_DISCOUNT
+      new_price = if strawberry_lines >= STRAWBERRIES_LINES_FOR_DISCOUNT
+                    STRAWBERRIES_FIXED_PRICE
+                  else
+                    strawberry_product.price
+                  end
 
       order.order_lines.each do |line|
-        line.price = STRAWBERRIES_FIXED_PRICE if line.product.code == STRAWBERRIES_CODE
+        line.price = new_price if line.product.code == STRAWBERRIES_CODE
       end
 
+      order
+    end
+
+    def self.correct(order)
       order
     end
   end

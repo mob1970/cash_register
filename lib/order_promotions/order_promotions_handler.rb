@@ -16,5 +16,13 @@ module OrderPromotions
 
       order
     end
+
+    def self.adjust(order)
+      @@promotions.values.each do |klass|
+        order = klass.correct(order)
+      end
+
+      order
+    end
   end
 end

@@ -33,7 +33,12 @@
       <tr>
         <td><%= order_line.product.name %></td>
         <td><%= convert_to_decimals(order_line.price, 2) %></td>
-        <td><%= link_to 'Delete', order_line, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <%= form_with(model: @order, local: true, id: "form_#{order_line.id}") do |form| %>
+          <%= form.fields_for :order_line do |order_line_form| %>
+              <%= form.hidden_field :order_line_to_remove, value: order_line.id %>
+              <td><a href='' onclick="document.getElementById('<%= "form_#{order_line.id}" %>').submit();" data-confirm="Are you sure?">Delete</a></td>
+          <% end %>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

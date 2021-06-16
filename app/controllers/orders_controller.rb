@@ -2,7 +2,7 @@ require './lib/number_handling/operations'
 require './lib/order_promotions/order_promotions'
 
 class OrdersController < ApplicationController
-  before_action :set_order, only: %i[ show edit update destroy ]
+  before_action :set_order, only: %i[show edit update destroy]
 
   # GET /orders or /orders.json
   def index
@@ -12,7 +12,9 @@ class OrdersController < ApplicationController
   # GET /orders/1 or /orders/1.json
   def show
     @products = Product.all
-    @order = Order.find(params['id'])
+    @order = Order.includes(:order_lines).joins(:order_lines)
+      .joins('INNER JOIN products ON products.id = order_lines.product_id')
+      .includes(:products).find(params['id'])
   end
 
   # GET /orders/new
@@ -21,8 +23,7 @@ class OrdersController < ApplicationController
   end
 
   # GET /orders/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /orders or /orders.json
   def create
@@ -31,7 +32,7 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
-        format.html { redirect_to @order, notice: "Order was successfully created." }
+        format.html { redirect_to @order, notice: 'Order was successfully created.' }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -43,9 +44,10 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1 or /orders/1.json
   def update
     add_new_product_to_order if new_product_sent?
+    delete_order_line_in_order if order_line_to_remove_sent?
     respond_to do |format|
       if @order.update(order_params)
-        format.html { redirect_to @order, notice: "Order was successfully updated." }
+        format.html { redirect_to @order, notice: 'Order was successfully updated.' }
         format.json { render :show, status: :ok, location: @order }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -58,36 +60,52 @@ class OrdersController < ApplicationController
   def destroy
     @order.destroy
     respond_to do |format|
-      format.html { redirect_to orders_url, notice: "Order was successfully destroyed." }
+      format.html { redirect_to orders_url, notice: 'Order was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_order
-      @order = Order.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def order_params
-      params.require(:order).permit(:name)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_order
+    @order = Order.find(params[:id])
+  end
 
-    def new_product_sent?
-      return false unless params['order']
-      return false unless params['order']['product_id'].present?
-      true
-    end
+  # Only allow a list of trusted parameters through.
+  def order_params
+    params.require(:order).permit(:name)
+  end
 
-    def add_new_product_to_order
-      product = Product.find(params['order']['product_id'])
-      @order.order_lines << OrderLine.new(product_id: product.id, price: product.price)
-      recalculate_order
-    end
+  def new_product_sent?
+    return false unless params['order']
+    return false unless params['order']['product_id'].present?
 
-    def recalculate_order
-      @order = OrderPromotions::OrderPromotionsHandler.apply(@order)
-      @order.total_amount = NumberHandling::Operations.convert_to_decimals(@order.order_lines.sum(&:price), 2)
-    end
+    true
+  end
+
+  def order_line_to_remove_sent?
+    return false unless params['order']
+    return false unless params['order']['order_line_to_remove'].present?
+
+    true
+  end
+
+  def add_new_product_to_order
+    product = Product.find(params['order']['product_id'])
+    @order.order_lines << OrderLine.new(product_id: product.id, price: product.price)
+    recalculate_order
+  end
+
+  def delete_order_line_in_order
+    order_line_id = OrderLine.find(params['order']['order_line_to_remove'])
+    @order.order_lines.delete(order_line_id)
+    @order = OrderPromotions::OrderPromotionsHandler.adjust(@order)
+    recalculate_order
+  end
+
+  def recalculate_order
+    @order = OrderPromotions::OrderPromotionsHandler.apply(@order)
+    @order.total_amount = @order.order_lines.sum(&:price).ceil(2)
+  end
 end
