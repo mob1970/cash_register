@@ -42,4 +42,13 @@ describe OrderPromotions::CoffeeAddictDiscount do
       end
     end
   end
+
+  describe '#adapt' do
+    let(:item_coffee) { OrderLine.new(product: coffee_product, price: 10.00) }
+    let(:just_one_coffee_order) { double('Order', order_lines: [item_coffee]) }
+
+    it 'must return the order unmodified' do
+      expect(described_class.correct(just_one_coffee_order)).to eq(just_one_coffee_order)
+    end
+  end
 end

@@ -43,4 +43,24 @@ describe OrderPromotions::GreenTeaForFree do
       end
     end
   end
+
+  describe '#adapt' do
+    context 'Free green tea has been removed.'do
+      let(:one_green_tea_order) { double('Order', order_lines: [item_green_tea_for_free]) }
+
+      it 'must contain no green tea at all' do
+        expect(described_class.correct(one_green_tea_order).order_lines.size).to eq(0)
+      end
+    end
+
+    context 'Paid green tea has been removed.'do
+      let(:one_green_tea_order) { double('Order', order_lines: [item_green_tea]) }
+
+      it 'must contain no green tea at all' do
+        expect(described_class.correct(one_green_tea_order).order_lines.size).to eq(0)
+      end
+    end
+  end
+
+
 end

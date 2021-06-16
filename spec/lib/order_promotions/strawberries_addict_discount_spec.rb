@@ -41,4 +41,13 @@ describe OrderPromotions::StrawberriesAddictDiscount do
       end
     end
   end
+
+  describe '#adapt' do
+    let(:item_strawberry) { OrderLine.new(product: strawberry_product, price: 5.00) }
+    let(:just_one_strawberry_order) { double('Order', order_lines: [item_strawberry]) }
+
+    it 'must return the order unmodified' do
+      expect(described_class.correct(just_one_strawberry_order)).to eq(just_one_strawberry_order)
+    end
+  end
 end
