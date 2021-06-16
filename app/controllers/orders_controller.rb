@@ -12,8 +12,9 @@ class OrdersController < ApplicationController
   # GET /orders/1 or /orders/1.json
   def show
     @products = Product.all
-    @order = Order.includes(:order_lines).joins(:order_lines)
-      .joins('INNER JOIN products ON products.id = order_lines.product_id')
+    @order = Order.includes(:order_lines)
+      .joins('LEFT JOIN order_lines ON orders.id = order_lines.order_id')
+      .joins('LEFT JOIN products ON products.id = order_lines.product_id')
       .includes(:products).find(params['id'])
   end
 

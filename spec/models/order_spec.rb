@@ -36,9 +36,9 @@ describe Order, type: :model do
         expect(subject.valid?).to be_falsey
       end
 
-      it 'must not be valid if order_id is equal to zero' do
+      it 'must be valid if order_id is equal to zero' do
         subject.total_amount = 0
-        expect(subject.valid?).to be_falsey
+        expect(subject.valid?).to be_truthy
       end
     end
   end

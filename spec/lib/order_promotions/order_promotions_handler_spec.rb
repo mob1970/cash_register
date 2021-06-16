@@ -12,7 +12,7 @@ describe OrderPromotions::OrderPromotionsHandler do
   let(:strawberry_product) { Product.new(code: 'SR1', name: 'Strawberry', price: 5.00) }
 
   let(:coffee_item) { OrderLine.new(product: coffee_product, price: 10.00) }
-  let(:price_with_discount_applied) { 6.6 }
+  let(:price_with_discount_applied) { 6.667 }
   let(:green_tea_item) { OrderLine.new(product: green_tea_product, price: 3.11) }
   let(:strawberry_item) { OrderLine.new(product: strawberry_product, price: 5.00) }
 
