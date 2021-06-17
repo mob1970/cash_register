@@ -7,12 +7,15 @@ require './lib/order_promotions/green_tea_for_free'
 require './lib/order_promotions/strawberries_addict_discount'
 
 describe OrderPromotions::OrderPromotionsHandler do
-  let(:coffee_product) { Product.new(code: 'CF1', name: 'Coffee', price: 10.00) }
-  let(:green_tea_product) { Product.new(code: 'GR1', name: 'Green Tea', price: 3.11) }
-  let(:strawberry_product) { Product.new(code: 'SR1', name: 'Strawberry', price: 5.00) }
+  let(:green_tea_product_offer) { ProductOffer.new(product_id: 1, minimum_quantity: 1, new_price: 0.000) }
+  let(:strawberry_product_offer) { ProductOffer.new(product_id: 2, minimum_quantity: 3, new_price: 4.500) }
+  let(:coffee_product_offer) { ProductOffer.new(product_id: 3, minimum_quantity: 3, new_price: 7.410) }
+  let(:green_tea_product) { Product.new(code: 'GR1', name: 'Green Tea', price: 3.11, product_offer: green_tea_product_offer) }
+  let(:strawberry_product) { Product.new(code: 'SR1', name: 'Strawberry', price: 5.00, product_offer: strawberry_product_offer) }
+  let(:coffee_product) { Product.new(code: 'CF1', name: 'Coffee', price: 10.00, product_offer: coffee_product_offer) }
 
   let(:coffee_item) { OrderLine.new(product: coffee_product, price: 10.00) }
-  let(:price_with_discount_applied) { 6.667 }
+  let(:price_with_discount_applied) { 7.410 }
   let(:green_tea_item) { OrderLine.new(product: green_tea_product, price: 3.11) }
   let(:strawberry_item) { OrderLine.new(product: strawberry_product, price: 5.00) }
 

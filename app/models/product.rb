@@ -3,6 +3,7 @@
 # Model to handle object Product
 class Product < ApplicationRecord
   has_many :order_lines
+  has_one :product_offer
 
   validates :code, null: false, length: { in: 1..10 }
   validates :name, null: false, length: { in: 1..50 }

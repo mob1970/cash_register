@@ -12,12 +12,14 @@ describe OrderPromotions::CoffeeAddictDiscount do
   let(:item_green_tea) { double('Green Tea', code: 'GR1', price: 10.00) }
   let(:item) { item_coffee }
   let(:order) { double('Order') }
+  let(:product_offer) { double('ProductOffer', product_id: 1, minimum_quantity: 1, new_price: 7.410) }
 
   describe '#adapt' do
     let(:product) { item }
 
     before :each do
       allow(Product).to receive(:find_by).with(code: coffee_product.code).and_return(coffee_product)
+      allow_any_instance_of(Product).to receive(:product_offer).and_return(product_offer)
     end
 
     context 'discount applied' do

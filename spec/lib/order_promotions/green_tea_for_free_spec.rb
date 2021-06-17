@@ -12,12 +12,14 @@ describe OrderPromotions::GreenTeaForFree do
   let(:item_coffee) { OrderLine.new(product: coffee_product, price: 10.00) }
   let(:item) { item_coffee }
   let(:order) { double('Order') }
+  let(:product_offer) { double('ProductOffer', product_id: 1, minimum_quantity: 1, new_price: 0.000) }
 
   describe '#adapt' do
     let(:product) { item }
 
     before :each do
       allow(Product).to receive(:find_by).with(code: green_tea_product.code).and_return(green_tea_product)
+      allow_any_instance_of(Product).to receive(:product_offer).and_return(product_offer)
     end
 
     context 'no green tea in the order' do

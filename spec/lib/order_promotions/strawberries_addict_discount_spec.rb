@@ -11,12 +11,14 @@ describe OrderPromotions::StrawberriesAddictDiscount do
   let(:item_strawberry_modified) { OrderLine.new(product: strawberry_product, price: new_price) }
   let(:item) { item_strawberry }
   let(:order) { double('Order') }
+  let(:product_offer) { double('ProductOffer', product_id: 2, minimum_quantity: 3, new_price: 4.500) }
 
   describe '#adapt' do
     let(:product) { item }
 
     before :each do
       allow(Product).to receive(:find_by).with(code: strawberry_product.code).and_return(strawberry_product)
+      allow_any_instance_of(Product).to receive(:product_offer).and_return(product_offer)
     end
 
     context 'price changed' do
