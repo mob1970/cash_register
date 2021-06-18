@@ -50,5 +50,6 @@ test:
 production:
   <<: *default
   database: cash_register_production
-  username: cash_register
-  password: <%= ENV['CASH_REGISTER_DATABASE_PASSWORD'] %>
+  username: <%= ENV['MYSQL_USERNAME'] %>
+  password: <%= ENV['MYSQL_PASSWORD'] %>
+  socket: /var/run/mysqld/mysqld.sock
