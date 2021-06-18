@@ -1,3 +1,31 @@
 // Place all the styles related to the orders controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.products-dropdown {
+  width: 300px !important;
+  display: inline !important;
+}
+
+.btn-new-line {
+  margin-left: 5px;
+}
+
+.link-back {
+  margin-top: 35px;
+}
+
+.product-info {
+  span {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  margin-bottom: 25px;
+}
+
+.form-label {
+    font-size: 16px;
+    margin-right: 5px;
+}
+

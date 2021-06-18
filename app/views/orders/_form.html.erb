@@ -12,10 +12,9 @@
   <% end %>
 
   <div class="actions">
-    <%= form.label :name %>
-    <%= form.text_field :name, maxlength: 100 %>
+    <%= form.label :name, class: 'form-label' %>
+    <%= form.text_field :name, maxlength: 100, class: 'form-control' %>
     <br />
-    <br />
-    <%= form.submit %>
+    <%= form.submit 'Create', class: 'btn btn-primary btn-new-line' %>
   </div>
 <% end %>

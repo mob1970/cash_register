@@ -1,30 +1,27 @@
-<p id="notice"><%= notice %></p>
-
-<label>Name:</label>
-<%= @order.name %>
-<br />
-<br />
-<label>Total amount:</label>
-<%= @order.total_amount %>
-<br /><br />
+<div class='product-info'>
+<h4>Name:</h4>
+<span><%= @order.name %></span>
+<h4>Total amount:</h4>
+<span><%= @order.total_amount %></span>
+</div>
 
 
 <%= form_with(model: @order, local: true) do |form| %>
   <%= form.fields_for :order_line do |order_line_form| %>
-      <%= form.label :product %>
-      <%= form.collection_select :product_id, @products, :id, :name %>
-      <%= form.submit 'Add Product' %>
+      <%= form.label :product, class: 'form-label' %>
+      <%= form.collection_select :product_id, @products, :id, :name, {}, { class: 'form-control products-dropdown' } %>
+      <%= form.submit 'Add Product', class: 'btn btn-primary btn-new-line' %>
   <% end %>
 <% end %>
 
 <br /><br />
 <br /><br />
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Product</th>
-      <th>Price</th>
-      <th colspan="3"></th>
+      <th scope="col">Product</th>
+      <th scope="col">Price</th>
+      <th scope="col"></th>
     </tr>
   </thead>
 

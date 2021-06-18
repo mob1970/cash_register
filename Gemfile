@@ -54,8 +54,8 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-# Gem that implements the handler pattern
-gem 'handler_registerable'
+# Twitter bootstrap toolkit
+gem 'twitter-bootstrap-rails'
 
 group :development, :test do
   gem 'rspec-rails'
